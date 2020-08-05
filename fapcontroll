@@ -1,3 +1,9 @@
+#############description###############
+#faps configured in host file as bts1,bts2,bts3,bts4 so or ip or hostname can be used as bts parameter
+# function get(bts, param) where param can be lac, channel, plmn , cellid
+#  function set set(bts , param ,value )
+
+import sys
 import paramiko
 ############GET VALUE #######################
 def get(bts='bts1', param='channel'):
@@ -10,7 +16,8 @@ def get(bts='bts1', param='channel'):
         com = "/opt/ipaccess/DMI/ipa-dmi -c 'get system.Device.Services.FAPService.1.CellConfig.UMTS.CN.PLMNID '"
     elif param == 'cellid':
         com = "/opt/ipaccess/DMI/ipa-dmi -c 'get  system.Device.Services.FAPService.1.CellConfig.UMTS.RAN.CellID  '"
-
+    else:
+        sys.exit("wrong parameter received")
     print("stariting ssh")
     client=paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -31,7 +38,7 @@ def get(bts='bts1', param='channel'):
     else:
         print("There was no output for this command")
 # SET VALUE  ################
-def set(bts='bts1', param='channel',value='10650'):
+def set(param, bts='bts1', value='10650' ):
 
     if param == 'lac':
         com = f"/opt/ipaccess/DMI/ipa-dmi -c 'set system.Device.Services.FAPService.1.CellConfig.UMTS.CN.LACRAC = \"{value}\"'"
@@ -42,7 +49,7 @@ def set(bts='bts1', param='channel',value='10650'):
     elif param == 'cellid':
         com = f"/opt/ipaccess/DMI/ipa-dmi -c 'set system.Device.Services.FAPService.1.CellConfig.UMTS.RAN.CellID = {value}  '"
     else:
-        print("wrong param")
+        sys.exit("wrong or empty  parameter received")
 
     print("stariting ssh")
     client=paramiko.SSHClient()
@@ -74,7 +81,7 @@ def tx(bts='bts1', param='get'):
     elif param == 'off':
         com = "/opt/ipaccess/DMI/ipa-dmi -c 'set system.Device.Services.FAPService.1.FAPControl.UMTS.AdminState = FALSE '"
     else:
-        print("wrong param")
+        sys.exit("wrong parameter received")
 
     print("stariting ssh")
     client=paramiko.SSHClient()
@@ -99,6 +106,6 @@ def tx(bts='bts1', param='get'):
 
 ##################################################3
 if __name__ == "__main__":
-    #get(bts='bts3', param='channel')
-    #set(bts='bts1', param='plmn', value='42502')
-     tx(bts='bts1', param='get')
+     #get(bts='bts3', param='hhh')
+     set(bts='bts1', value='42502', param='plmn')
+     #tx(bts='bts1', param='off')
