@@ -1,0 +1,104 @@
+import paramiko
+############GET VALUE #######################
+def get(bts='bts1', param='channel'):
+
+    if param == 'lac':
+        com = "/opt/ipaccess/DMI/ipa-dmi -c 'get system.Device.Services.FAPService.1.CellConfig.UMTS.CN.LACRAC  '"
+    elif param == 'channel':
+        com = "/opt/ipaccess/DMI/ipa-dmi -c 'get system.Device.Services.FAPService.1.REM.X_000295_RFParamsCandidateList'"
+    elif param == 'plmn':
+        com = "/opt/ipaccess/DMI/ipa-dmi -c 'get system.Device.Services.FAPService.1.CellConfig.UMTS.CN.PLMNID '"
+    elif param == 'cellid':
+        com = "/opt/ipaccess/DMI/ipa-dmi -c 'get  system.Device.Services.FAPService.1.CellConfig.UMTS.RAN.CellID  '"
+
+    print("stariting ssh")
+    client=paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(bts, username='root', password='D9!*3n4Fw7Ka')
+    output = ""
+    stdin, stdout, stderr = client.exec_command(com)
+    print("ssh succuessful. Closing connection")
+    stdout = stdout.readlines()
+    client.close()
+    print("Connection closed")
+
+    print(stdout)
+    print(com)
+    for line in stdout:
+        output = output + line
+    if output != "":
+        print(output)
+    else:
+        print("There was no output for this command")
+# SET VALUE  ################
+def set(bts='bts1', param='channel',value='10650'):
+
+    if param == 'lac':
+        com = f"/opt/ipaccess/DMI/ipa-dmi -c 'set system.Device.Services.FAPService.1.CellConfig.UMTS.CN.LACRAC = \"{value}\"'"
+    elif param == 'channel':
+        com = f"/opt/ipaccess/DMI/ipa-dmi -c 'set system.Device.Services.FAPService.1.REM.X_000295_RFParamsCandidateList = \"{value}\" '"
+    elif param == 'plmn':
+        com = f"/opt/ipaccess/DMI/ipa-dmi -c 'set system.Device.Services.FAPService.1.CellConfig.UMTS.CN.PLMNID = \"{value}\" '"
+    elif param == 'cellid':
+        com = f"/opt/ipaccess/DMI/ipa-dmi -c 'set system.Device.Services.FAPService.1.CellConfig.UMTS.RAN.CellID = {value}  '"
+    else:
+        print("wrong param")
+
+    print("stariting ssh")
+    client=paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(bts, username='root', password='D9!*3n4Fw7Ka')
+    output = ""
+    stdin, stdout, stderr = client.exec_command(com)
+    print("ssh succuessful. Closing connection")
+    stdout = stdout.readlines()
+    client.close()
+    print("Connection closed")
+
+    print(stdout)
+    print(com)
+    for line in stdout:
+        output = output + line
+    if output != "":
+        print(output)
+    else:
+        print("There was no output for this command")
+
+##########TRANSSMIT ON/OFF/GET#############################################
+def tx(bts='bts1', param='get'):
+
+    if param == 'get':
+        com = "/opt/ipaccess/DMI/ipa-dmi -c 'get system.Device.Services.FAPService.1.FAPControl.UMTS.AdminState   '"
+    elif param == 'on':
+        com = "/opt/ipaccess/DMI/ipa-dmi -c 'set system.Device.Services.FAPService.1.FAPControl.UMTS.AdminState = TRUE '"
+    elif param == 'off':
+        com = "/opt/ipaccess/DMI/ipa-dmi -c 'set system.Device.Services.FAPService.1.FAPControl.UMTS.AdminState = FALSE '"
+    else:
+        print("wrong param")
+
+    print("stariting ssh")
+    client=paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(bts, username='root', password='D9!*3n4Fw7Ka')
+    output = ""
+    stdin, stdout, stderr = client.exec_command(com)
+    print("ssh succuessful. Closing connection")
+    stdout = stdout.readlines()
+    client.close()
+    print("Connection closed")
+
+    print(stdout)
+    print(com)
+    for line in stdout:
+        output = output + line
+    if output != "":
+        print(output)
+    else:
+        print("There was no output for this command")
+
+
+##################################################3
+if __name__ == "__main__":
+    #get(bts='bts3', param='channel')
+    #set(bts='bts1', param='plmn', value='42502')
+     tx(bts='bts1', param='get')
