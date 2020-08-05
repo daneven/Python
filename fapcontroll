@@ -1,8 +1,13 @@
-#############description###############
-#faps configured in host file as bts1,bts2,bts3,bts4 so or ip or hostname can be used as bts parameter
-# function get(bts, param) where param can be lac, channel, plmn , cellid
-#  function set set(bts , param ,value )
-
+#               description
+#       FAP ip configured in host file as bts1,bts2,bts3,bts4 so   IP or Hostname can be used as "bts" parameter
+#       function get(bts, param)
+#                                  where param can be lac, channel, plmn or  cellid
+#       function  set(bts , param ,value )
+#                                   where "param" can be lac, channel, plmn , cellid
+#                                   "value" is what we want to define
+#       function  tx(bts , param )  where "param" can be:
+#                                   get      -get current value
+#                                   on / off -transmit on off
 import sys
 import paramiko
 ############GET VALUE #######################
@@ -107,5 +112,5 @@ def tx(bts='bts1', param='get'):
 ##################################################3
 if __name__ == "__main__":
      #get(bts='bts3', param='hhh')
-     set(bts='bts1', value='42502', param='plmn')
+     set(bts='bts2', value='42502', param='plmn')
      #tx(bts='bts1', param='off')
